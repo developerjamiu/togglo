@@ -21,6 +21,12 @@ class FeatureToggleHandlers {
     // Get a specific feature toggle
     router.get('/toggles/<id>', _getToggle);
 
+    // Update single values of a toggle
+    router.patch('/toggles/<id>', _patchToggle);
+
+    // Toggle enabled state
+    router.patch('/toggles/<id>/toggle', _toggleEnabled);
+
     // Update a feature toggle
     router.put('/toggles/<id>', _updateToggle);
 
@@ -92,6 +98,66 @@ class FeatureToggleHandlers {
     } catch (e) {
       return Response.internalServerError(
         body: json.encode({'error': e.toString()}),
+        headers: {'content-type': 'application/json'},
+      );
+    }
+  }
+
+  Future<Response> _patchToggle(Request request, String id) async {
+    try {
+      final toggle = await _service.get(id);
+      if (toggle == null) {
+        return Response.notFound(
+          jsonEncode({'error': 'Toggle not found'}),
+          headers: {'content-type': 'application/json'},
+        );
+      }
+
+      final payload = await request.readAsString();
+      final data = jsonDecode(payload);
+
+      // Update only the provided fields
+      final updatedToggle = toggle.copyWith(
+        name: data['name'] ?? toggle.name,
+        description: data['description'] ?? toggle.description,
+        enabled: data['enabled'] ?? toggle.enabled,
+        rules: data['rules'] ?? toggle.rules,
+      );
+
+      await _service.set(updatedToggle);
+      return Response.ok(
+        jsonEncode(updatedToggle.toJson()),
+        headers: {'content-type': 'application/json'},
+      );
+    } catch (e) {
+      return Response.internalServerError(
+        body: jsonEncode({'error': e.toString()}),
+        headers: {'content-type': 'application/json'},
+      );
+    }
+  }
+
+  Future<Response> _toggleEnabled(Request request, String id) async {
+    try {
+      final toggle = await _service.get(id);
+      if (toggle == null) {
+        return Response.notFound(
+          jsonEncode({'error': 'Toggle not found'}),
+          headers: {'content-type': 'application/json'},
+        );
+      }
+
+      // Toggle the enabled state
+      final updatedToggle = toggle.copyWith(enabled: !toggle.enabled);
+      await _service.set(updatedToggle);
+
+      return Response.ok(
+        jsonEncode(updatedToggle.toJson()),
+        headers: {'content-type': 'application/json'},
+      );
+    } catch (e) {
+      return Response.internalServerError(
+        body: jsonEncode({'error': e.toString()}),
         headers: {'content-type': 'application/json'},
       );
     }

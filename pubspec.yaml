@@ -1,0 +1,21 @@
+name: togglo
+description: A feature toggle management system with GlobeKV backend.
+version: 1.0.0
+repository: https://github.com/developerjamiu/togglo
+
+environment:
+  sdk: ^3.6.0
+
+# Add regular dependencies here.
+dependencies:
+  shelf: ^1.4.1
+  shelf_router: ^1.1.4
+  json_annotation: ^4.8.1
+  globe_kv: ^1.0.0+1
+  dotenv: ^4.1.0
+
+dev_dependencies:
+  lints: ^5.0.0
+  test: ^1.24.0
+  build_runner: ^2.4.8
+  json_serializable: ^6.7.1

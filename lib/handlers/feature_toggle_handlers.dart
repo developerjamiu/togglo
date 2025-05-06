@@ -147,7 +147,6 @@ class FeatureToggleHandlers {
         );
       }
 
-      // Toggle the enabled state
       final updatedToggle = toggle.copyWith(enabled: !toggle.enabled);
       await _service.set(updatedToggle);
 

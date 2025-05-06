@@ -116,7 +116,6 @@ class FeatureToggleHandlers {
       final payload = await request.readAsString();
       final data = jsonDecode(payload);
 
-      // Update only the provided fields
       final updatedToggle = toggle.copyWith(
         name: data['name'] ?? toggle.name,
         description: data['description'] ?? toggle.description,

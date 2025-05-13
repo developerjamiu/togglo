@@ -108,7 +108,7 @@ class FeatureToggleHandlers {
       final toggle = await _service.get(id);
       if (toggle == null) {
         return Response.notFound(
-          jsonEncode({'error': 'Toggle not found'}),
+          jsonEncode({'error': 'Toggle not found!'}),
           headers: {'content-type': 'application/json'},
         );
       }

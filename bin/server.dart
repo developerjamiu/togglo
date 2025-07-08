@@ -10,6 +10,7 @@ void main() async {
   final handlers = FeatureToggleHandlers(service);
 
   final pipeline = Pipeline()
+      .addMiddleware(logRequests())
       .addMiddleware(corsMiddleware())
       .addHandler(handlers.router.call);
 

@@ -9,7 +9,7 @@ class Environment {
   }
 
   Environment._internal() {
-    _dotenv = DotEnv(includePlatformEnvironment: true)..load();
+    _dotenv = DotEnv(includePlatformEnvironment: true, quiet: true)..load();
   }
 
   String get globeNamespace => _dotenv['GLOBE_NAMESPACE'] ?? '';
